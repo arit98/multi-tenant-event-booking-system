@@ -1,0 +1,90 @@
+// Modern forced-colors-mode support to replace deprecated -ms-high-contrast
+@media (forced-colors: active) {
+  // High contrast mode styles
+  * {
+    forced-color-adjust: auto;
+  }
+  
+  // Ensure proper contrast in high contrast mode
+  .payload-admin {
+    background-color: Canvas;
+    color: CanvasText;
+  }
+  
+  // Button styles for high contrast
+  button {
+    border: 1px solid ButtonText;
+    background-color: ButtonFace;
+    color: ButtonText;
+    
+    &:hover {
+      background-color: Highlight;
+      color: HighlightText;
+    }
+    
+    &:focus {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Input styles for high contrast
+  input, textarea, select {
+    border: 1px solid FieldText;
+    background-color: Field;
+    color: FieldText;
+    
+    &:focus {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Link styles for high contrast
+  a {
+    color: LinkText;
+    
+    &:visited {
+      color: VisitedText;
+    }
+    
+    &:focus {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Additional accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Focus visible styles for better accessibility
+:focus-visible {
+  outline: 2px solid #0070f3;
+  outline-offset: 2px;
+}
+
+// Skip link for accessibility
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #0070f3;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  
+  &:focus {
+    top: 6px;
+  }
+}
