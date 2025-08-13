@@ -15,8 +15,8 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URI=postgresql://postgres:password@postgres:5432/payload_neon
-      - PAYLOAD_SECRET=your-secret-key-here
+      - NEXT_PUBLIC_DATABASE_URI=postgresql://postgres:password@postgres:5432/payload_neon
+      - NEXT_PUBLIC_PAYLOAD_SECRET=your-secret-key-here
 
   postgres:
     restart: always

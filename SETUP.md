@@ -30,8 +30,8 @@
 Create a `.env.local` file with:
 
 ```bash
-DATABASE_URI=postgresql://username:password@localhost:5432/event_booking_db
-PAYLOAD_SECRET=your-super-secret-key-here
+NEXT_PUBLIC_DATABASE_URI=postgresql://username:password@localhost:5432/event_booking_db
+NEXT_PUBLIC_PAYLOAD_SECRET=your-super-secret-key-here
 NEXTAUTH_SECRET=your-nextauth-secret-here
 NEXTAUTH_URL=http://localhost:3000
 ```

@@ -32,13 +32,13 @@ export default buildConfig({
   },
   collections: [Users, Media, Tenants, Events, Bookings, BookingLogs, Notifications],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.NEXT_PUBLIC_PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.NEXT_PUBLIC_DATABASE_URI || '',
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
