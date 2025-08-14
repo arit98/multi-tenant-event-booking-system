@@ -20,7 +20,7 @@ export const Users: CollectionConfig = {
     },
     {
       name: 'password',
-      type: 'password',
+      type: 'password' as unknown as any,
       required: true,
       admin: {
         description: 'User password (hashed automatically by Payload)',

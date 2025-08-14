@@ -1,9 +1,9 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import jwt from 'jsonwebtoken'
+import jwt, { type Secret, type SignOptions } from 'jsonwebtoken'
 
-const ACCESS_TOKEN_EXP = process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXP
-const REFRESH_TOKEN_EXP = process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXP
+const ACCESS_TOKEN_EXP = process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXP || '30d'
+const REFRESH_TOKEN_EXP = process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXP || '7d'
 
 export async function POST(req: Request) {
   try {
@@ -40,19 +40,19 @@ export async function POST(req: Request) {
       })
     }
 
-    const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET || 'secret'
+    const jwtSecret: Secret = process.env.NEXT_PUBLIC_JWT_SECRET || 'secret'
 
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email },
-      jwtSecret,
-      { expiresIn: ACCESS_TOKEN_EXP }
-    )
+    const accessSignOptions: SignOptions = {
+      expiresIn: ACCESS_TOKEN_EXP as SignOptions['expiresIn'],
+    }
 
-    const refreshToken = jwt.sign(
-      { id: user.id, email: user.email },
-      jwtSecret,
-      { expiresIn: REFRESH_TOKEN_EXP }
-    )
+    const refreshSignOptions: SignOptions = {
+      expiresIn: REFRESH_TOKEN_EXP as SignOptions['expiresIn'],
+    }
+
+    const accessToken = jwt.sign({ id: user.id, email: user.email }, jwtSecret, accessSignOptions)
+
+    const refreshToken = jwt.sign({ id: user.id, email: user.email }, jwtSecret, refreshSignOptions)
 
     return new Response(
       JSON.stringify({
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
     )
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {

@@ -24,11 +24,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    meta: {
-      titleSuffix: '- Event Booking Admin',
-      ogImage: '/og-image.jpg',
-      favicon: '/favicon.ico',
-    },
+    // meta removed to match Payload MetaConfig type
   },
   collections: [Users, Media, Tenants, Events, Bookings, BookingLogs, Notifications],
   editor: lexicalEditor(),
@@ -49,10 +45,5 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  // Add session configuration
-  express: {
-    json: {
-      limit: '10mb',
-    },
-  },
+  // Removed unsupported express config to match Payload Config type
 })
