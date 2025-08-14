@@ -442,6 +442,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  password?: T;
   role?: T;
   tenant_id?: T;
   isActive?: T;

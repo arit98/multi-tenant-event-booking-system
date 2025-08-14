@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -17,6 +17,14 @@ export const Users: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+    },
+    {
+      name: 'password',
+      type: 'password',
+      required: true,
+      admin: {
+        description: 'User password (hashed automatically by Payload)',
+      },
     },
     {
       name: 'role',
@@ -52,9 +60,9 @@ export const Users: CollectionConfig = {
       ({ data, req }) => {
         // Ensure email is lowercase
         if (data.email) {
-          data.email = data.email.toLowerCase();
+          data.email = data.email.toLowerCase()
         }
-        return data;
+        return data
       },
     ],
   },

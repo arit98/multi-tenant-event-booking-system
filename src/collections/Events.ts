@@ -7,6 +7,35 @@ export const Events: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: ({ req: { user } }: any) => {
+      if (!user) return false
+      // Only organizers and admins can create events for their tenant
+      return user.role === 'organizer' || user.role === 'admin'
+    },
+    update: ({ req: { user }, doc }: any) => {
+      if (!user) return false
+      if (user.role === 'admin') return true
+      if (user.role === 'organizer') {
+        const tenantId =
+          typeof user.tenant_id === 'string' || typeof user.tenant_id === 'number'
+            ? user.tenant_id
+            : user.tenant_id?.id
+        return doc?.tenant === tenantId || doc?.tenant?.id === tenantId
+      }
+      return false
+    },
+    delete: ({ req: { user }, doc }: any) => {
+      if (!user) return false
+      if (user.role === 'admin') return true
+      if (user.role === 'organizer') {
+        const tenantId =
+          typeof user.tenant_id === 'string' || typeof user.tenant_id === 'number'
+            ? user.tenant_id
+            : user.tenant_id?.id
+        return doc?.tenant === tenantId || doc?.tenant?.id === tenantId
+      }
+      return false
+    },
   },
   fields: [
     {
@@ -31,18 +60,18 @@ export const Events: CollectionConfig = {
       min: 1,
     },
     {
-        name: 'organizer',
-        type: 'relationship',
-        relationTo: 'users',
-        required: true,
-        admin: {
-          description: 'The user organizing this event',
-        },
+      name: 'organizer',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+      admin: {
+        description: 'The user organizing this event',
+      },
     },
     {
-      name: 'tenant', 
-      type: 'relationship', 
-      relationTo: 'tenants', 
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
       required: true,
       admin: {
         description: 'The tenant this event belongs to',
