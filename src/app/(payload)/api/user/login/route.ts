@@ -1,9 +1,5 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import jwt, { type Secret, type SignOptions } from 'jsonwebtoken'
-
-const ACCESS_TOKEN_EXP = process.env.NEXT_PUBLIC_ACCESS_TOKEN_EXP || '30d'
-const REFRESH_TOKEN_EXP = process.env.NEXT_PUBLIC_REFRESH_TOKEN_EXP || '7d'
 
 export async function POST(req: Request) {
   try {
@@ -40,24 +36,13 @@ export async function POST(req: Request) {
       })
     }
 
-    const jwtSecret: Secret = process.env.NEXT_PUBLIC_JWT_SECRET || 'secret'
-
-    const accessSignOptions: SignOptions = {
-      expiresIn: ACCESS_TOKEN_EXP as SignOptions['expiresIn'],
-    }
-
-    const refreshSignOptions: SignOptions = {
-      expiresIn: REFRESH_TOKEN_EXP as SignOptions['expiresIn'],
-    }
-
-    const accessToken = jwt.sign({ id: user.id, email: user.email }, jwtSecret, accessSignOptions)
-
-    const refreshToken = jwt.sign({ id: user.id, email: user.email }, jwtSecret, refreshSignOptions)
+    // Use the token returned by Payload's login so `payload.auth` will accept it
+    const accessToken = loginResult?.token
 
     return new Response(
       JSON.stringify({
         accessToken,
-        refreshToken: `Bearer ${refreshToken}`,
+        user,
       }),
       {
         status: 200,
